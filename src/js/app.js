@@ -1,23 +1,13 @@
 import json from './parser.js';
 import read from './reader.js';
 
-export default class GameSavingLoader {
-  static load() {
-    return new Promise((resolve, reject) => {
-      setTimeout(() => {
-        read()
-          .then((val) => val)
-          .then((data) => {
-            const value = json(data);
-            resolve(value);
-          });
-      }, 1000);
-    });
+export default async function main() {
+  try {
+    const resultRead = await Promise.resolve(read());
+    const resultJson = await Promise.resolve(json(resultRead));
+    return JSON.parse(resultJson);
+  }
+  catch(e) {
+    return 'error';
   }
 }
-
-GameSavingLoader.load().then((saving) => {
-  return JSON.parse(saving);
-}, (error) => {
-  return error;
-});
